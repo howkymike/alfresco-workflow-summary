@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Alfresco AIO Project - SDK 4.0
 
 This is an All-In-One (AIO) project for Alfresco SDK 4.0.
@@ -44,3 +45,20 @@ All the services of the project are now run as docker containers. The run script
 
   * Abstract assembly into a dependency so we don't have to ship the assembly in the archetype
   * Functional/remote unit tests
+=======
+# workflow-summary
+Alfresco addon - Workflow Summary Dashlet
+
+## How to get AMPS?
+- `git clone https://github.com/howkymike/workflow-summary.git`
+- `mvn clean package`
+
+## How to test it?
+- `git clone https://github.com/howkymike/workflow-summary.git`
+- `cd workflow-summary`
+- `./run build_start`
+
+
+### More addons:
+[Howkymike addons](https://howkymike.github.io/alfrescoAddons.html)
+>>>>>>> ad74d7e48c21e633dcb38cfe8bc60c06a2907052
