@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Process Dashlet</shortname>
+    <description> Process Dashlet</description>
+    <family>dashlet</family>
+    <url>/howky/ProcessDashlet</url>
+</webscript>

@@ -1,0 +1,31 @@
+dashlet.name=Raport obieg\u00F3w
+dashlet.help=Mo\u017Cesz podgl\u0105dn\u0105\u0107 tutaj wszystkie procesy.
+tab.table=Tabela
+tab.chart=Wykres
+
+howkyProcessDashlet.processName=Nazwa procesu:
+howkyProcessDashlet.startedBefore=Rozpocz\u0119te przed:
+howkyProcessDashlet.startedAfter=Rozpocz\u0119te po:
+howkyProcessDashlet.initiator=Nadawca:
+howkyProcessDashlet.state=Zako\u0144czone
+howkyProcessDashlet.submit=Generuj
+
+howkyProcessDashlet.definitioNameAll=Wszystko
+howkyProcessDashlet.definitioNamePlaceholder=Wybierz rodzaj procesu
+
+howkyProcessDashlet.initiatorPlaceholder=Wybierz nadawce
+
+howkyProcessDashlet.InitiatorAll=Wszyscy
+
+table.header.name=Rodzaj procesu
+table.header.desc=Opis
+table.header.date=Data
+table.header.daysProcess=Dni procesu
+table.header.initiator=Nadawca
+table.header.currentTaskName=Aktualny etap
+table.header.currentTaskPerson=Aktualny wykonawca
+table.header.currentTaskDays=Dni zadania
+table.header.progress=Post\u0119p
+
+table.currentTaskDaysLimit=5
+table.currentProcessDaysLimit=10
