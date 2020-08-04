@@ -166,20 +166,21 @@ function makeInitiatorEmpty() {
 									
 						<hr id="${el}-hr" class="hrDivider hidden" />
 						<div id="reportingTabs" class="hidden">		
-						 <div class="navTabs" style="display:none;">			 
+						 <div class="navTabs">			 
 						  <button style="font-size: 12px" onclick="switchTab(event, 'tabs-table')" class="howkyTablinks" id="defaultOpenTab">${msg("tab.table")}</button>
-						  <button style="font-size: 12px" onclick="switchTab(event, 'tabs-chart')" class="howkyTablinks">${msg("tab.chart")}</button>
-						  <a class="downloadButton" style="display:none;"><img style="height: 16px;" alt="Zapisz jako Excel" src="${page.url.context}/res/howkyReporting/images/download.png"></a>
+						  <a class="downloadButton"><img style="height: 16px;" alt="Zapisz jako PDF" src="${page.url.context}/res/howkyReporting/images/download.png" onclick="createPDF()"></a>
 						 </div>
 						 
 						 <div id="tabs-table" class="tabsClass" style="margin-top: 1em;">
 						  <table id="tabTable" class="relativeOver"></table>
 						</div>
-						<div id="tabs-chart" class="tabsClass">
+						<div id="tabs-chartLine" class="tabsClass">
 						  <canvas id="howkyReportingChart" class="relativeOver"></canvas>
 						</div>
 						</div>
 						<script type="text/javascript">
+
+						
 						
 						 function switchTab(evt, tabName) {
 						   var i, tabcontent, tablinks;
@@ -200,7 +201,7 @@ function makeInitiatorEmpty() {
 						   event.preventDefault();
 						   
 						   if(!("${isAuthenticated?c}" === "true")) {
-						   	alert("Nie masz uprawnień!");
+						   	alert("${msg('howkyProcessDashlet.noPermission')}");
 						   	return;
 						   }
 						   
@@ -344,6 +345,34 @@ window.addEventListener('load', function () {
       document.getElementById("Share").appendChild(document.getElementsByClassName("sticky-wrapper")[0].children[1]);
     }
 })
+
+
+    function createPDF() {
+        var processTable = document.getElementById('tabs-table').innerHTML;
+
+        var style = "<style>";
+        style += "table {width: 100%;font: 17px Calibri;border-collapse: collapse;}";
+        style += "th {padding-top: 12px;padding-bottom: 12px;background-color: #1e88e5;color: white;}";
+        style += "tr, th {border: 1px solid #ddd; padding: 8px; cursor: pointer;text-align: center;}";
+        style += "tr:nth-child(even){background-color: #f2f2f2;}";
+        style += "</style>";
+
+        // CREATE A WINDOW OBJECT.
+        var win = window.open('', '', 'height=700,width=700');
+
+        win.document.write('<html><head>');
+        win.document.write('<title>Raport obiegów</title>');   // PDF HEADER.
+        win.document.write(style);          // ADD STYLE
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(processTable);  
+        win.document.write('</body></html>');
+
+        win.document.close();
+        win.print();
+        win.close();
+    }
+
 						</script>
                     
                     

@@ -9,6 +9,7 @@ howkyProcessDashlet.startedAfter=Rozpocz\u0119te po:
 howkyProcessDashlet.initiator=Nadawca:
 howkyProcessDashlet.state=Zako\u0144czone
 howkyProcessDashlet.submit=Generuj
+howkyProcessDashlet.noPermission=Nie masz uprawnie\u0144!
 
 howkyProcessDashlet.definitioNameAll=Wszystko
 howkyProcessDashlet.definitioNamePlaceholder=Wybierz rodzaj procesu
