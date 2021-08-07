@@ -20,4 +20,17 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+	<bean id="webscript.howkymike.processDashlet.processDashlet.get"
+		  class="com.howkymike.processDashlet.GetProcessDashlet"
+		  parent="abstractWorkflowWebScript">
+		  <property name="siteService" ref="siteService" />
+		  <property name="showGroupMembers" value="${processdashlet.showGroupMembers}" />
+		  <property name="additionalFieldPropName" value="${processdashlet.additionalFieldPropName}" />
+	</bean>
+	
+	<bean id="webscript.howkymike.processDashlet.processDashletDefinitions.get"
+		  class="com.howkymike.processDashlet.GetProcessDashletDefinitions"
+		  parent="abstractWorkflowWebScript">
+		  <property name="siteService" ref="siteService" />
+	</bean>
 </beans>

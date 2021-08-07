@@ -18,6 +18,8 @@ import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.security.AuthorityService;
 import org.alfresco.service.cmr.security.PersonService;
+import org.alfresco.service.cmr.site.SiteInfo;
+import org.alfresco.service.cmr.site.SiteService;
 import org.alfresco.service.cmr.workflow.WorkflowService;
 import org.alfresco.service.cmr.workflow.WorkflowTask;
 import org.alfresco.service.cmr.workflow.WorkflowTaskQuery;
@@ -25,29 +27,23 @@ import org.alfresco.service.namespace.QName;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
+import com.howkymike.processDashlet.GetProcessDashlet;
+
 public class MyWorkflowPermissionInterceptor implements MethodInterceptor
 {
     private PersonService personService;
+    private SiteService siteService;
     private AuthorityService authorityService;
     private WorkflowService workflowService;
     private NodeService nodeService;
 
-    public static final String PROCESS_MANAGER_GROUP_NAME = "GROUP_MANAGER";
+    public static final String PROCESS_MANAGER_GROUP_NAME = "GROUP_WORKFLOW_MANAGER";
+    public static final String GROUP_PROCESS_SITE_MANAGER = "GROUP_WORKFLOW_SITE_MANAGER";
     
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable
     {
         String currentUser = AuthenticationUtil.getRunAsUser();
-        
-        // MY CUSTOM ADDON
-        Set<String> userGroups = authorityService.getAuthoritiesForUser(currentUser);
-        for (String groupName : userGroups)
-        {
-            if (groupName.equals(PROCESS_MANAGER_GROUP_NAME))
-            {
-            	return invocation.proceed();
-            }
-        }
         
         // See if we can shortcut (for 'System' and 'admin')
         
@@ -55,7 +51,22 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
         {
             return invocation.proceed();
         }
-
+        
+        // MY CUSTOM ADDON
+        Set<String> userGroups = authorityService.getAuthoritiesForUser(currentUser);
+        boolean isSiteManager = false;
+        for (String groupName : userGroups)
+        {
+            if (groupName.equals(PROCESS_MANAGER_GROUP_NAME))
+            {
+            	return invocation.proceed();
+            }
+            if(groupName.equals(GROUP_PROCESS_SITE_MANAGER))
+            {
+            	isSiteManager = true;
+            }
+        }
+        
         String methodName = invocation.getMethod().getName();
 
         if (methodName.equals("getTaskById"))
@@ -64,12 +75,13 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
             WorkflowTask wt = (WorkflowTask) result;
             
             if (isInitiatorOrAssignee(wt, currentUser) || fromSameParallelReviewWorkflow(wt, currentUser) || 
-                        isStartTaskOfProcessInvolvedIn(wt, currentUser))
+                        isStartTaskOfProcessInvolvedIn(wt, currentUser) || (isSiteManager && isWorkflowSiteManager(wt, currentUser)))
             {
                 return result;
             }
             else
             {
+            	
                 String taskId = (String) invocation.getArguments()[0];
                 throw new AccessDeniedException("Accessing task with id='" + taskId + "' is not allowed for user '" + currentUser + "'");
             }
@@ -81,7 +93,7 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
             Object result = invocation.proceed();
             WorkflowTask wt = (WorkflowTask) result;
             
-            if (isInitiatorOrAssignee(wt, currentUser) || isUserPartOfProcess(wt, currentUser))
+            if (isInitiatorOrAssignee(wt, currentUser) || isUserPartOfProcess(wt, currentUser) || (isSiteManager && isWorkflowSiteManager(wt, currentUser)))
             {
                 return result;
             }
@@ -97,7 +109,7 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
         {
             String taskId = (String) invocation.getArguments()[0];
             WorkflowTask taskToUpdate = workflowService.getTaskById(taskId);
-            if (isInitiatorOrAssignee(taskToUpdate, currentUser))
+            if (isInitiatorOrAssignee(taskToUpdate, currentUser) || (isSiteManager && isWorkflowSiteManager(taskToUpdate, currentUser)))
             {
                 return invocation.proceed();
             }
@@ -117,7 +129,7 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
             for (WorkflowTask wt : rawList)
             {
                 if (isInitiatorOrAssignee(wt, currentUser) || fromSameParallelReviewWorkflow(wt, currentUser)
-                            || isStartTaskOfProcessInvolvedIn(wt, currentUser))
+                            || isStartTaskOfProcessInvolvedIn(wt, currentUser) || (isSiteManager && isWorkflowSiteManager(wt, currentUser)))
                 {
                     resultList.add(wt);
                 }
@@ -129,6 +141,18 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
         return invocation.proceed();
     }
 
+    
+    private boolean isWorkflowSiteManager(WorkflowTask wt, String userName) {
+    	String workflowDefname = wt.getPath().getInstance().getDefinition().getName();
+    	
+		List<SiteInfo> userSites = siteService.listSites(userName);
+		if(GetProcessDashlet.hasWorkflowAccess(workflowDefname, userSites)) {
+			return true;
+		}
+		return false;
+    	
+    }
+    
     private boolean isInitiatorOrAssignee(WorkflowTask wt, String userName)
     {
         if (wt == null)
@@ -276,6 +300,11 @@ public class MyWorkflowPermissionInterceptor implements MethodInterceptor
     public void setPersonService(PersonService personService)
     {
         this.personService = personService;
+    }
+    
+    public void setSiteService(SiteService siteService)
+    {
+        this.siteService = siteService;
     }
 
     public void setAuthorityService(AuthorityService authorityService)

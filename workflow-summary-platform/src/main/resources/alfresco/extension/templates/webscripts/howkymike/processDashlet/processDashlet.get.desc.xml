@@ -1,0 +1,83 @@
+<webscript>
+  <shortname>ProcessDashlet API</shortname>
+  <description>Get json for the processDashlet table</description>
+  <url>/howkymike/processdashlet/get?siteName={siteName?}&amp;definitionName={definitionName?}&amp;initiatedBefore={initiatedBefore?}&amp;initiatedAfter={initiatedAfter?}&amp;initiator={initiator}&amp;state={state?}&amp;currTaskAuthority={currTaskAuthority?}&amp;additionalField={additionalField?}</url>
+  <format default="json"/>
+  <authentication runas="admin">user</authentication>
+  <transaction allow="readonly">required</transaction>
+  <lifecycle>draft</lifecycle>
+  <args>
+    <arg>
+      <name>siteName</name>
+      <description>Restricts the list of workflow instances returned to those inside given site. It is ignored when definitionName is provided</description>
+    </arg> 
+    <arg>
+      <name>definitionName</name>
+      <description>Restricts the list of workflow instances returned to those started by the given workflow definition name i.e. any deployed version of that definition.</description>
+    </arg> 
+    <arg>
+      <name>initiatedBefore</name>
+      <description>Restricts the returned workflow instances to only those that were initiated before the provided date (the date must be in ISO8601 format)</description>
+    </arg> 
+    <arg>
+      <name>initiatedAfter</name>
+      <description>Restricts the returned workflow instances to only those that were initiated after the provided date (the date must be in ISO8601 format)</description>
+    </arg>
+    <arg>
+      <name>initiator</name>
+      <description>Filter the list of workflow instances by the authority that initiated the workflow instance.</description>
+    </arg>
+    <arg>
+      <name>state</name>
+      <description>Filters the returned workflow instances by state, ACTIVE or COMPLETED (lower case is also acceptable). If this argument is omitted only active workflow instances are returned.</description>
+    </arg>
+    <arg>
+      <name>currTaskAuthority</name>
+      <description>Allows to filter via the current task authority.</description>
+    </arg>
+    <arg>
+      <name>additionalField</name>
+      <description>Allows to filter via the additional filed specified via processdashlet.additionalFieldPropName property in the configuration file.</description>
+    </arg>
+ </args>
+ <responses>
+   <response>
+      <format>json</format>
+      <type>
+         <![CDATA[
+         {
+            "data":
+            [
+               {
+               	  "instanceID": string,
+                  "definitionName": string,
+                  "instanceTitle": string,
+                  "startDate": string,
+                  "endDate": string,
+                  "currentTask": 
+                  {
+                  	 "taskTitle": string,
+                  	 "taskAuthority": string,
+                  	 "taskStartDate" : string
+                  },
+                  "initiator":
+                  {
+                     "userName": string,
+                     "firstName": string,
+                     "lastName": string
+                  },
+               },
+               ...
+            ],
+            "paging": 
+            {
+               "totalItems": number,
+               "maxItems": number,
+               "skipCount": number
+            }
+         }
+         ]]>
+      </type>
+   </response>
+ </responses>
+</webscript>

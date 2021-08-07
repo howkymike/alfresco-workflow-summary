@@ -1,0 +1,33 @@
+<webscript>
+  <shortname>ProcessDashlet API - definitions</shortname>
+  <description>Get json for the processDashlet filter</description>
+  <url>/howkymike/processdashlet/getDefinitions</url>
+  <format default="json"/>
+  <authentication runas="admin">user</authentication>
+  <transaction allow="readonly">required</transaction>
+  <lifecycle>draft</lifecycle>
+ <responses>
+   <response>
+      <format>json</format>
+         <type>
+            <![CDATA[
+            {
+               "data":
+               [
+                  {
+                     "id": string,
+                     "url": string,
+                     "name": string,
+                     "title": string,
+                     "sitePrefix": string,
+                     "description": string,
+                     "version": string
+                  },
+                  ...
+               ]
+            }
+            ]]>
+         </type>
+   </response>
+ </responses>
+</webscript>

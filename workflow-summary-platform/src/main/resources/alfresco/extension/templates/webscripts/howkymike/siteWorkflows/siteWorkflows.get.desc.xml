@@ -1,0 +1,9 @@
+<webscript>
+    <shortname>Get all user's workflows</shortname>
+    <description>Returns a list of user workflows based on the user's sites</description>
+    <url>/howkymike/userSiteWorkflows</url>
+    <url>/howkymike/userSiteWorkflows.json</url>
+    <format default="json">extension</format>
+    <authentication>user</authentication>
+   <transaction allow="readonly">required</transaction>
+</webscript>

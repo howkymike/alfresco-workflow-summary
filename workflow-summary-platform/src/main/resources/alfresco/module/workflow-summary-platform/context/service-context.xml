@@ -22,6 +22,7 @@
 
     <bean id="WorkflowService_security" class="com.howkymike.workflow.MyWorkflowPermissionInterceptor" >
       <property name="personService"><ref bean="personService"/></property>
+      <property name="siteService"><ref bean="siteService"/></property>
       <property name="authorityService"><ref bean="authorityService"/></property>
       <property name="workflowService"><ref bean="workflowServiceImpl" /></property>
       <property name="nodeService"><ref bean="nodeService"></ref></property>

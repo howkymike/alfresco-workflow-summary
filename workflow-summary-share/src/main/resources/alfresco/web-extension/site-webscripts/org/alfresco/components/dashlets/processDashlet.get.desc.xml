@@ -1,6 +1,6 @@
 <webscript>
     <shortname>Process Dashlet</shortname>
-    <description> Process Dashlet</description>
+    <description>Dashlet for viewing, filtering and managing workflows</description>
     <family>dashlet</family>
     <url>/howky/ProcessDashlet</url>
 </webscript>
