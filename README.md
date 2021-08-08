@@ -19,7 +19,7 @@ It enables the **GROUP_MANAGER** group to see and filter all workflows in the pl
 - Ability to Reassign current workflow task to someone else
 - alfresco-global.properties Properties:
 	- **processdashlet.showGroupMembers** - boolean; true if you want to iterate over all group members and display them instead of the group name
-	- **processdashlet.additionalFieldPropName=san** - string; Additional Filed property name (used in filter)
+	- **processdashlet.additionalFieldPropName** - string; Additional Filed property name (used in filter)
 - Alfresco share properties (currenly only aviable to change in the processDashlet.get.properties files)
 	- **table.currentTaskDaysLimit** :  the number of task days after which the number is shown in red color
 	- **table.currentProcessDaysLimit** : the number of process days after which the number is shown in red color
