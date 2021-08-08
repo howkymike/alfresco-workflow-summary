@@ -1,6 +1,8 @@
 <@markup id="js">
 <@script type="text/javascript" src="${page.url.context}/res/howkyReporting/js/processDashlet.js"/>
 </@>
+<!-- Simple Dialog -->
+<@script type="text/javascript" src="${page.url.context}/res/modules/simple-dialog.js"></@script>
 <#-- Stylesheet Dependencies-->
 <@markup id="css">
 	<@link rel="stylesheet" type="text/css" href="${page.url.context}/res/components/form/form.css"/>
@@ -109,15 +111,17 @@ ${el?replace("-", "_")}_howkysiteNameSelectChange();
 var howkyInitiatorBaseURL = Alfresco.constants.PROXY_URI + "api/forms/picker/authority/children?selectableType=cm:person&searchTerm=";
 let howkyInitiatorIfHidden = true;
 
-function showDropdown() {
-    document.getElementById("${el}-howkyInitiatorDropdownForm").classList.toggle("show");
+function showDropdown(dropdownId) {
+	let dropdownElement = null;
+	if(typeof dropdownId === 'object')
+		dropdownElement = dropdownId;
+	else
+		dropdownElement = document.getElementById(dropdownId);
+    dropdownElement.classList.toggle("show");
 
-    if (howkyInitiatorIfHidden) {
-        document.getElementById("howkyInitiatorinput").focus();
-        howkyInitiatorIfHidden = false;
-    } else {
-        howkyInitiatorIfHidden = true;
-    }
+    if (dropdownElement.classList.contains("show")) {
+    	dropdownElement.getElementsByTagName('INPUT')[0].focus();
+    } 
 }
 
 function howkyInitiatorSearch() {
@@ -149,7 +153,7 @@ function howkyInitiatorSearch() {
                     howkyInitiator.value = res[0].substring(1, res[0].length-1);
                     howkyInitiator.text = this.value;
 
-                    showDropdown();
+                    showDropdown(myselect.parentNode);
                 };
                 myselect.appendChild(option);
             }
@@ -157,17 +161,19 @@ function howkyInitiatorSearch() {
     }
 }
 
-function makeInitiatorEmpty() {
-    let initiatorInput = document.getElementById("${el}-howkyInitiator");
-    initiatorInput.value = "";
-    initiatorInput.text = "${msg('howkyProcessDashlet.InitiatorAll')}";
-    showDropdown();
+
+function makeDropdownEmpty(elementId) {
+    const dropdownInput = document.getElementById(elementId);
+    dropdownInput.value = "";
+    dropdownInput.text = "${msg('howkyProcessDashlet.InitiatorAll')}";
+    const dropdownElement = dropdownInput.parentNode.getElementsByClassName('dropdown-frame')[0];
+    showDropdown(dropdownElement);
 }
 </script>
 
 
 <label for="${el}-howkyInitiator">${msg('howkyProcessDashlet.initiator')}</label><br>
-<input id="${el}-howkyInitiator" name="initiator" tabindex="0" class="dropbtn myselectclassid" readonly type="text" placeholder="${msg('howkyProcessDashlet.initiatorPlaceholder')}" value="" style="width: 227px"/>
+<input id="${el}-howkyInitiator" name="initiator" tabindex="0" class="dropbtn myselectclassid" readonly type="text" placeholder="${msg('howkyProcessDashlet.initiatorPlaceholder')}" value="" style="width: 227px" onclick='showDropdown("${el}-howkyInitiatorDropdownForm")'/>
 <div id="${el}-howkyInitiatorDropdownForm" class="dropdown-frame">
 	<input type="text" placeholder="Szukaj.." id="howkyInitiatorinput" onkeyup="howkyInitiatorSearch()">
     <div id="${el}-howkyInitiatorDropdownContent" class="dropdown-content">
@@ -258,7 +264,8 @@ document.forms['procesInstancesForm'].addEventListener('submit', (event) => {
         let headerData = ["${msg('table.header.name')}", "${msg('table.header.desc')}", "${msg('table.header.date')}",
             "${msg('table.header.daysProcess')}", "${msg('table.header.initiator')}"];	//, "${msg('table.header.progress')}"
         if(!completed)
-            headerData.push("${msg('table.header.currentTaskName')}", "${msg('table.header.currentTaskPerson')}", "${msg('table.header.currentTaskDays')}");
+            headerData.push("${msg('table.header.currentTaskName')}", "${msg('table.header.currentTaskPerson')}"
+            , "${msg('table.header.currentTaskDays')}", "${msg('table.header.actions')}");
         generateTableHead(table, headerData);
         generateTable(table, body["data"]);
         document.getElementById("howkyspinner").setAttribute('hidden', '');
@@ -371,8 +378,29 @@ function generateTable(table, data) {
                 let text = document.createTextNode(cellValue);
                 cell.appendChild(text);
             }
+            
+            // create assignButton
+            let assignButton = createReassignButton(element["currentTask"]["taskId"]);
+			let cell = row.insertCell();
+			cell.appendChild(assignButton);
         }
     }
+}
+
+function createReassignButton(taskId) {
+	let assignButton = document.createElement("button");
+	assignButton.innerHTML = "${msg('howkyProcessDashlet.reassignbutton')}";
+	assignButton.dataset.taskId = taskId;
+	assignButton.addEventListener ("click", processDashlet_onReassignActionClick);
+	assignButton.classList.add("reassignbutton");
+	
+	let assignButtonSpanFirst = document.createElement('span');
+	assignButtonSpanFirst.classList.add("first-child");
+	assignButtonSpanFirst.appendChild(assignButton);
+	let assignButtonSpan = document.createElement('span');
+	assignButtonSpan.classList.add("yui-button", "yui-push-button");
+	assignButtonSpan.appendChild(assignButtonSpanFirst);
+	return assignButtonSpan;
 }
 
 function dateInputUpdate(id) {
@@ -401,7 +429,6 @@ function setDefaultDateValues() {
 
 window.addEventListener('load', function () {
 //document.getElementsByClassName("sticky-footer")[0].style.marginTop="auto";
-    document.getElementById("${el}-howkyInitiator").addEventListener("click", showDropdown);
     if(document.getElementsByClassName("sticky-wrapper")[0].children.length === 4) {    // footer fix
         document.getElementById("Share").appendChild(document.getElementsByClassName("sticky-wrapper")[0].children[1]);
         document.getElementById("Share").appendChild(document.getElementsByClassName("sticky-wrapper")[0].children[1]);

@@ -13,6 +13,7 @@
       	"endDate": "${workflowInstance.endDate!""}"<#if workflowInstance.currentTask??>,
       	"currentTask": 
       	{
+      		"taskId": "${workflowInstance.currentTask.taskId!""}",
         	"taskTitle": "${workflowInstance.currentTask.taskTitle!""}",
         	"taskAuthority": "${workflowInstance.currentTask.taskAuthority!""}",
         	"taskStartDate": "${workflowInstance.currentTask.taskStartDate!""}"

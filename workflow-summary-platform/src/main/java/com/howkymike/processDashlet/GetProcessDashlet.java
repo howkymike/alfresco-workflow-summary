@@ -66,10 +66,12 @@ public class GetProcessDashlet extends AbstractWorkflowWebscript{
     public static final String WORKFLOW_END_DATE = "endDate";
     public static final String WORKFLOW_CURRENT_TASK = "currentTask";
     public static final String WORKFLOW_INITIATOR = "initiator";
-    
+
+    public static final String CURRENT_TASK_ID = "taskId";
     public static final String CURRENT_TASK_TITLE = "taskTitle";
     public static final String CURRENT_TASK_START_DATE = "taskStartDate";
     public static final String CURRENT_TASK_AUTHORITY = "taskAuthority";
+    
     
     public static final String WORKFLOW_INITIATOR_USERNAME = "userName";
     public static final String WORKFLOW_INITIATOR_FIRSTNAME = "firstName";
@@ -167,7 +169,7 @@ public class GetProcessDashlet extends AbstractWorkflowWebscript{
         }
       
         this.requestedCurrTaskAuthrority = req.getParameter(PARAM_CURR_TASK_AUTHORITY);
-        if(this.requestedCurrTaskAuthrority.isEmpty())
+        if(this.requestedCurrTaskAuthrority == null || this.requestedCurrTaskAuthrority.isEmpty())
         	this.requestedCurrTaskAuthrority = null;
         
         this.requestedAdditionalFieldValue = req.getParameter(PARAM_ADDITIONAL_FIELD);
@@ -285,6 +287,7 @@ public class GetProcessDashlet extends AbstractWorkflowWebscript{
                 		return null;
                 }
                 if(isActive) {
+                	currTaskModel.put(CURRENT_TASK_ID, currTask.getId());
                     currTaskModel.put(CURRENT_TASK_TITLE, currTask.getTitle());
                     if (workflowInstance.getStartDate() == null)
                     	currTaskModel.put(CURRENT_TASK_START_DATE, taskProps.get(WorkflowModel.PROP_START_DATE));

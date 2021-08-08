@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webscript>
+  <shortname>Changes workflow task assignee</shortname>
+  <description>Change workflow's current task assignee</description>
+  <url>/howkymike/processdashlet/changeassignee/{task_instance_id}</url>
+  <authentication runas="admin">user</authentication>
+  <transaction>required</transaction>
+  <format default="json">argument</format>
+  <lifecycle>draft</lifecycle>
+   <args>
+      <arg>
+         <shortname>task_instance_id</shortname>
+         <description>The id of the task to update assignee for.</description>
+      </arg>
+   </args>
+   <requests>
+      <request>
+         <format>json</format>
+         <type>
+            <![CDATA[
+            {
+               "assignee": string
+            }
+            ]]>
+         </type>
+      </request>
+   </requests>
+   <responses>
+      <response>
+         <format>json</format>
+         <type>
+            <![CDATA[
+            {
+               "success": boolean
+            }
+            ]]>
+         </type>
+      </response>
+   </responses>
+</webscript>

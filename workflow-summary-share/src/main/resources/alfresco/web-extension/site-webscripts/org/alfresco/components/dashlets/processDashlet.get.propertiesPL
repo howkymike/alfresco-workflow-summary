@@ -17,6 +17,7 @@ howkyProcessDashlet.definitioNamePlaceholder=Wybierz rodzaj procesu
 howkyProcessDashlet.initiatorPlaceholder=Wybierz nadawce
 
 howkyProcessDashlet.InitiatorAll=Wszyscy
+howkyProcessDashlet.reassignbutton=Przypisz
 
 table.header.name=Rodzaj procesu
 table.header.desc=Opis
@@ -27,6 +28,7 @@ table.header.currentTaskName=Aktualny etap
 table.header.currentTaskPerson=Aktualny wykonawca
 table.header.currentTaskDays=Dni zadania
 table.header.progress=Post\u0119p
+table.header.actions=Akcje
 
 table.currentTaskDaysLimit=5
 table.currentProcessDaysLimit=10

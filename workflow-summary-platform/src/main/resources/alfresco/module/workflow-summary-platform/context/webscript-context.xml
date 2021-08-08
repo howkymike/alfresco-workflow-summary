@@ -33,4 +33,11 @@
 		  parent="abstractWorkflowWebScript">
 		  <property name="siteService" ref="siteService" />
 	</bean>
+	
+	<bean id="webscript.howkymike.processDashlet.processDashletChangeAssignee.put"
+		  class="com.howkymike.processDashlet.PutProcessDashletAssignee"
+		  parent="abstractWorkflowWebScript">
+		  <property name="siteService" ref="siteService" />
+		  <property name="taskService" ref="activitiTaskService" />
+	</bean>
 </beans>

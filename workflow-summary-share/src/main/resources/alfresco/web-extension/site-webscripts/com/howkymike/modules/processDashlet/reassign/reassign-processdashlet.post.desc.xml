@@ -1,0 +1,6 @@
+<webscript>
+  <shortname>reassign-processdashlet-post</shortname>
+  <description>Reassign dialog for Process Dashlet </description>
+  <url>/modules/howkymike/processdashlet/reassign/{componentId}</url>
+  <format default="json">argument</format>
+</webscript>

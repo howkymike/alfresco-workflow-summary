@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>reassign-processdashlet</shortname>
+  <description>Reassign dialog for Process Dashlet</description>
+  <url>/modules/howkymike/processdashlet/reassign</url>
+</webscript>

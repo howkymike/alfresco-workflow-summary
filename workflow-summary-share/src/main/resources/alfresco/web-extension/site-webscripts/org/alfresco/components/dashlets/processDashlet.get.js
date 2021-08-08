@@ -39,3 +39,5 @@ for (var i = 0; i < jsonB.groups.length; i++) {
 	}
 }
 model.isAuthenticated = isAuthenticated;
+
+
