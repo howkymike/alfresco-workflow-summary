@@ -12,7 +12,6 @@ import java.util.Set;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
-import org.alfresco.repo.template.TemplateNode;
 import org.alfresco.repo.web.scripts.workflow.AbstractWorkflowWebscript;
 import org.alfresco.repo.web.scripts.workflow.WorkflowModelBuilder;
 import org.alfresco.repo.workflow.WorkflowModel;
@@ -26,7 +25,6 @@ import org.alfresco.service.cmr.workflow.WorkflowInstanceQuery;
 import org.alfresco.service.cmr.workflow.WorkflowTask;
 import org.alfresco.service.cmr.workflow.WorkflowTaskQuery;
 import org.alfresco.service.cmr.workflow.WorkflowTaskState;
-import org.alfresco.service.namespace.InvalidQNameException;
 import org.alfresco.service.namespace.NamespaceException;
 import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
@@ -192,8 +190,14 @@ public class GetProcessDashlet extends AbstractWorkflowWebscript{
         }
         for (WorkflowInstance workflow : workflows)
         {	
-            results.set(skipCount, buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE));
-            skipCount++;
+        	Map<String, Object> workflowProcessDashletModel = buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE);
+        	if(workflowProcessDashletModel != null) {
+        		if((this.requestedCurrTaskAuthrority != null))
+        			results.add(buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE));
+        		else
+        			results.set(skipCount, buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE));
+                skipCount++;
+        	}
         }	
         
         // create and return results, paginated if necessary

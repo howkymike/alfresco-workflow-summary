@@ -9,7 +9,7 @@ function howkyReassignTaskSearch() {
     const myselect = document.getElementById("${el}howkyReassignTaskDropdownContent");
 
     const mytestHttp = new XMLHttpRequest();
-    const url = howkyInitiatorBaseURL + query + "&size=1000";
+    const url = howkyInitiatorBaseURL + query;
     mytestHttp.open("GET", url);
     mytestHttp.send();
     mytestHttp.onreadystatechange = (e) => {

@@ -108,7 +108,7 @@ function ${el?replace("-", "_")}_howkysiteNameSelectChange() {
 ${el?replace("-", "_")}_howkysiteNameSelectChange();
 
 
-var howkyInitiatorBaseURL = Alfresco.constants.PROXY_URI + "api/forms/picker/authority/children?selectableType=cm:person&searchTerm=";
+var howkyInitiatorBaseURL = Alfresco.constants.PROXY_URI + "api/people?startIndex=0&pageSize=20&filter=" ; //"api/forms/picker/authority/children?selectableType=cm:person&searchTerm=";
 let howkyInitiatorIfHidden = true;
 
 function showDropdown(dropdownId) {
@@ -132,7 +132,7 @@ function howkyInitiatorSearch() {
     const myselect = document.getElementById("${el}-howkyInitiatorDropdownContent");
 
     const mytestHttp = new XMLHttpRequest();
-    const url = howkyInitiatorBaseURL + query + "&size=1000";
+    const url = howkyInitiatorBaseURL + query;
     mytestHttp.open("GET", url);
     mytestHttp.send();
     mytestHttp.onreadystatechange = (e) => {
