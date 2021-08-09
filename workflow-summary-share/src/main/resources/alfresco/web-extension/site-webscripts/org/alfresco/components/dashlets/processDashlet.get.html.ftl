@@ -408,18 +408,18 @@ function dateInputUpdate(id) {
     hidden.value = new Date(document.getElementById(id).value).toJSON();
 }
 
-function setDefaultDateValues() {
-	let configDefaultMaxProcessDays = parseInt(${msg('howkyProcessDashlet.defaultMinProcessDays')});
-	if(!isNaN(configDefaultMaxProcessDays) && configDefaultMaxProcessDays > 0) {
-		let stopDateDefaultValue=new Date(new Date().setDate(new Date().getDate() - configDefaultMaxProcessDays));
-		const startDateElement = document.getElementById("${el}-stopDate");
-		startDateElement.valueAsDate=stopDateDefaultValue;
-		startDateElement.onchange();
+function howky_setDefaultDateValues() {
+	let configDefaultStartedAfterDays = parseInt(${msg('howkyProcessDashlet.defaultStartedAfterProcessDays')});
+	if(!isNaN(configDefaultStartedAfterDays) && configDefaultStartedAfterDays > 0) {
+		let stopDateDefaultValue=new Date(new Date().setDate(new Date().getDate() - configDefaultStartedAfterDays));
+		const stopDateElement = document.getElementById("${el}-stopDate");
+		stopDateElement.valueAsDate=stopDateDefaultValue;
+		stopDateElement.onchange();
 	}
 
-	let configDefaultMinProcessDays = parseInt(${msg('howkyProcessDashlet.defaultMaxProcessDays')});
-	if(!isNaN(configDefaultMinProcessDays) && configDefaultMinProcessDays > 0) {
-		let startDateDefaultValue=new Date(new Date().setDate(new Date().getDate() - configDefaultMinProcessDays));
+	let configDefaultStartedBeforeDays = parseInt(${msg('howkyProcessDashlet.defaultStartedBeforeProcessDays')});
+	if(!isNaN(configDefaultStartedBeforeDays) && configDefaultStartedBeforeDays > 0) {
+		let startDateDefaultValue=new Date(new Date().setDate(new Date().getDate() - configDefaultStartedBeforeDays));
 		const startDateElement = document.getElementById("${el}-startDate");
 		startDateElement.valueAsDate=startDateDefaultValue;
 		startDateElement.onchange();
@@ -434,7 +434,7 @@ window.addEventListener('load', function () {
         document.getElementById("Share").appendChild(document.getElementsByClassName("sticky-wrapper")[0].children[1]);
     }
     
-    setDefaultDateValues();
+    howky_setDefaultDateValues();
 })
 
 

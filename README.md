@@ -23,8 +23,8 @@ It enables the **GROUP_MANAGER** group to see and filter all workflows in the pl
 - Alfresco share properties (currenly only aviable to change in the processDashlet.get.properties files)
 	- **table.currentTaskDaysLimit** :  the number of task days after which the number is shown in red color
 	- **table.currentProcessDaysLimit** : the number of process days after which the number is shown in red color
-	- **howkyProcessDashlet.defaultMaxProcessDays** : default startedAfter date shown in filter control
-	- **howkyProcessDashlet.defaultMinProcessDays** : default startedBefore date shown in filter control
+	- **howkyProcessDashlet.defaultStartedAfterProcessDays** : default startedAfter date shown in filter control
+	- **howkyProcessDashlet.defaultStartedBeforeProcessDays** : default startedBefore date shown in filter control
 	- **howkyProcessDashlet.additionalFieldPropTitle** : label for the additional Field property
 
 *Site workflow* is the workflows that ID's prefix is the site ID followed by a '__'. (i.e. site with id "test" may have its workflow with ID "test__insurance_claim")
