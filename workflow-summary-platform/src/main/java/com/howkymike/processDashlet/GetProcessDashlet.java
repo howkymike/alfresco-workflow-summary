@@ -182,7 +182,7 @@ public class GetProcessDashlet extends AbstractWorkflowWebscript{
         
         
         List<Map<String, Object>> results = null;
-        if(this.additionalFieldQName != null || (this.requestedCurrTaskAuthrority != null)) {
+        if(this.additionalFieldQName != null || this.requestedCurrTaskAuthrority != null) {
         	results = new ArrayList<Map<String, Object>>();
         } else {
             results = new ArrayList<Map<String, Object>>(total);
@@ -192,7 +192,7 @@ public class GetProcessDashlet extends AbstractWorkflowWebscript{
         {	
         	Map<String, Object> workflowProcessDashletModel = buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE);
         	if(workflowProcessDashletModel != null) {
-        		if((this.requestedCurrTaskAuthrority != null))
+        		if(this.additionalFieldQName != null || this.requestedCurrTaskAuthrority != null)
         			results.add(buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE));
         		else
         			results.set(skipCount, buildForProcessDashlet(workflow, state == WorkflowState.ACTIVE));
