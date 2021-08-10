@@ -138,20 +138,18 @@ function howkyInitiatorSearch() {
     mytestHttp.onreadystatechange = (e) => {
         if (mytestHttp.readyState === 4 && mytestHttp.status === 200) {
             const json = JSON.parse(mytestHttp.responseText);
-            const arr = json["data"]["items"];
-            const patt = /\([^)]+\)/g;
+            const arr = json["people"];
             while (myselect.children.length > 1) {
 		        myselect.removeChild(myselect.lastChild);
 		    }
             for (let i = 0; i < arr.length; i++) {
                 const option = document.createElement("OPTION");
-                option.value = arr[i]["name"];
-                option.text = arr[i]["name"];
+                option.value = arr[i]["userName"];
+                option.text = arr[i]["firstName"] + " " + arr[i]["lastName"] + " (" + arr[i]["userName"] + ")";
                 option.onclick = function () {
                     const howkyInitiator = document.getElementById("${el}-howkyInitiator");
-                    let res = this.value.match(patt);
-                    howkyInitiator.value = res[0].substring(1, res[0].length-1);
-                    howkyInitiator.text = this.value;
+                    howkyInitiator.value = this.value;
+                    howkyInitiator.text = this.text;
 
                     showDropdown(myselect.parentNode);
                 };
@@ -267,7 +265,7 @@ document.forms['procesInstancesForm'].addEventListener('submit', (event) => {
             headerData.push("${msg('table.header.currentTaskName')}", "${msg('table.header.currentTaskPerson')}"
             , "${msg('table.header.currentTaskDays')}", "${msg('table.header.actions')}");
         generateTableHead(table, headerData);
-        generateTable(table, body["data"]);
+        generateTable(table, body["data"], completed);
         document.getElementById("howkyspinner").setAttribute('hidden', '');
         document.getElementById("reportingTabs").removeAttribute('hidden');
     }).catch((error) => {
@@ -309,7 +307,7 @@ function generateTableHead(table, data) {
 
 
 
-function generateTable(table, data) {
+function generateTable(table, data, completed) {
     for (let element of data) {
         let row = table.insertRow();
         row.classList.add("howkyRowStyle");
@@ -351,7 +349,7 @@ function generateTable(table, data) {
             cell.appendChild(text);
         }
 
-        if(element["currentTask"]) { // taskDetailed
+        if(!completed) { // taskDetailed
             let cellTaskOrder = ["currTaskTitle", "currTaskAuthority", "currTaskDays"];
             for (let i = 0; i < cellTaskOrder.length; i++) {
                 let cell = row.insertCell();

@@ -15,20 +15,19 @@ function howkyReassignTaskSearch() {
     mytestHttp.onreadystatechange = (e) => {
         if (mytestHttp.readyState === 4 && mytestHttp.status === 200) {
             const json = JSON.parse(mytestHttp.responseText);
-            const arr = json["data"]["items"];
+            const arr = json["people"];
             const patt = /\([^)]+\)/g;
             while (myselect.children.length > 1) {
 		        myselect.removeChild(myselect.lastChild);
 		    }
             for (let i = 0; i < arr.length; i++) {
                 const option = document.createElement("OPTION");
-                option.value = arr[i]["name"];
-                option.text = arr[i]["name"];
+                option.value = arr[i]["userName"];
+                option.text = arr[i]["firstName"] + " " + arr[i]["lastName"] + " (" + arr[i]["userName"] + ")";
                 option.onclick = function () {
                     const howkyInitiator = document.getElementById("${el}assignee");
-                    let res = this.value.match(patt);
-                    howkyInitiator.value = res[0].substring(1, res[0].length-1);
-                    howkyInitiator.text = this.value;
+                    howkyInitiator.value = this.value;
+                    howkyInitiator.text = this.text;
 
                     showDropdown(myselect.parentNode);
                 };
